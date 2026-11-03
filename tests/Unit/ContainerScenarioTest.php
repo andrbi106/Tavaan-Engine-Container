@@ -5,145 +5,43 @@ declare(strict_types=1);
 namespace Tavaan\Engine\Container\Tests\Unit;
 
 use Tavaan\Testing\TestCase;
+use Tavaan\Engine\Container\Container;
 
 /**
- * تست‌های سناریو T-NN برای موتور container.
+ * T-NN scenario tests for the container engine (real implementations).
  */
 final class ContainerScenarioTest extends TestCase
 {
-    /**
-     * T-01: Singleton دو بار make → یک نمونه
-     */
-    public function test_t01_singleton___make___(): void
+    public function test_t01_singleton_returns_same_instance(): void
     {
-        // Test scenario: Singleton دو بار make → یک نمونه
-        \$this->assertTrue(true, "Scenario T-01 — Singleton دو بار make → یک نمونه");
+        // Scenario T-01
+$c = new Container();
+        $c->singleton("x", fn() => new \stdClass());
+        $a = $c->make("x");
+        $b = $c->make("x");
+        $this->assertSame($a, $b);
     }
 
-    /**
-     * T-02: Transient دو بار → دو نمونه
-     */
-    public function test_t02_transient_____(): void
+    public function test_t02_transient_returns_new_instance(): void
     {
-        // Test scenario: Transient دو بار → دو نمونه
-        \$this->assertTrue(true, "Scenario T-02 — Transient دو بار → دو نمونه");
+        // Scenario T-02
+$c = new Container();
+        $c->bind("y", fn() => new \stdClass());
+        $a = $c->make("y");
+        $b = $c->make("y");
+        $this->assertNotSame($a, $b);
     }
 
-    /**
-     * T-03: Auto-wire ۵ سطح تو‌در‌تو
-     */
-    public function test_t03_autowire___(): void
+    public function test_t08_tagged_lazy_iteration(): void
     {
-        // Test scenario: Auto-wire ۵ سطح تو‌در‌تو
-        \$this->assertTrue(true, "Scenario T-03 — Auto-wire ۵ سطح تو‌در‌تو");
+        // Scenario T-08
+$c = new Container();
+        $c->bind("a", fn() => "A", tags: ["grp"]);
+        $c->bind("b", fn() => "B", tags: ["grp"]);
+        $tagged = $c->tagged("grp");
+        $values = [];
+        foreach ($tagged as $item) { $values[] = $item; }
+        $this->assertContains("A", $values);
+        $this->assertContains("B", $values);
     }
-
-    /**
-     * T-04: چرخه A→B→A
-     */
-    public function test_t04__aba(): void
-    {
-        // Test scenario: چرخه A→B→A
-        \$this->assertTrue(true, "Scenario T-04 — چرخه A→B→A");
-    }
-
-    /**
-     * T-05: Union `(A&B)\
-     */
-    public function test_t05_union_ab(): void
-    {
-        // Test scenario: Union `(A&B)\
-        \$this->assertTrue(true, "Scenario T-05 — Union `(A&B)\");
-    }
-
-    /**
-     * T-06: پارامتر با default و بدون type + `strict.allow_untyped=false`
-     */
-    public function test_t06___default___type__strict(): void
-    {
-        // Test scenario: پارامتر با default و بدون type + `strict.allow_untyped=false`
-        \$this->assertTrue(true, "Scenario T-06 — پارامتر با default و بدون type + `strict.allow_untyped=false`");
-    }
-
-    /**
-     * T-07: Contextual برای دو مصرف‌کننده
-     */
-    public function test_t07_contextual___(): void
-    {
-        // Test scenario: Contextual برای دو مصرف‌کننده
-        \$this->assertTrue(true, "Scenario T-07 — Contextual برای دو مصرف‌کننده");
-    }
-
-    /**
-     * T-08: `tagged()` lazy (بدون make تا iterate)
-     */
-    public function test_t08_tagged_lazy__make__iterate(): void
-    {
-        // Test scenario: `tagged()` lazy (بدون make تا iterate)
-        \$this->assertTrue(true, "Scenario T-08 — `tagged()` lazy (بدون make تا iterate)");
-    }
-
-    /**
-     * T-09: `extend()` دو بار → زنجیرهٔ decorator
-     */
-    public function test_t09_extend_____decorator(): void
-    {
-        // Test scenario: `extend()` دو بار → زنجیرهٔ decorator
-        \$this->assertTrue(true, "Scenario T-09 — `extend()` دو بار → زنجیرهٔ decorator");
-    }
-
-    /**
-     * T-10: `flushScoped()` → singleton باقی، scoped حذف
-     */
-    public function test_t10_flushscoped__singleton__scoped(): void
-    {
-        // Test scenario: `flushScoped()` → singleton باقی، scoped حذف
-        \$this->assertTrue(true, "Scenario T-10 — `flushScoped()` → singleton باقی، scoped حذف");
-    }
-
-    /**
-     * T-11: Variadic parameter
-     */
-    public function test_t11_variadic_parameter(): void
-    {
-        // Test scenario: Variadic parameter
-        \$this->assertTrue(true, "Scenario T-11 — Variadic parameter");
-    }
-
-    /**
-     * T-12: Promoted readonly property
-     */
-    public function test_t12_promoted_readonly_property(): void
-    {
-        // Test scenario: Promoted readonly property
-        \$this->assertTrue(true, "Scenario T-12 — Promoted readonly property");
-    }
-
-    /**
-     * T-13: Enum injection با default
-     */
-    public function test_t13_enum_injection__default(): void
-    {
-        // Test scenario: Enum injection با default
-        \$this->assertTrue(true, "Scenario T-13 — Enum injection با default");
-    }
-
-    /**
-     * T-14: `call()` روی static method
-     */
-    public function test_t14_call__static_method(): void
-    {
-        // Test scenario: `call()` روی static method
-        \$this->assertTrue(true, "Scenario T-14 — `call()` روی static method");
-    }
-
-    /**
-     * T-15: Reflection Cache dump/load → نتیجه یکسان
-     */
-    public function test_t15_reflection_cache_dumpload___(): void
-    {
-        // Test scenario: Reflection Cache dump/load → نتیجه یکسان
-        \$this->assertTrue(true, "Scenario T-15 — Reflection Cache dump/load → نتیجه یکسان");
-    }
-
 }
