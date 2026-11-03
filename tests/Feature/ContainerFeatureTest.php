@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Container\Tests\Feature;
 
-use PHPUnit\Framework\TestCase;
+use Tavaan\Testing\TestCase;
 use Tavaan\Engine\Container\Container;
 use Tavaan\Engine\Container\ContainerServiceProvider;
 use Tavaan\Engine\Container\Contracts\ContainerInterface;
