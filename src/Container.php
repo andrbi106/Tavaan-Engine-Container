@@ -488,43 +488,65 @@ final class Container implements ContainerInterface
     /**
      * dependencyGraph
      */
-    public function dependencyGraph()
+    public function dependencyGraph(): array
     {
-        return null;
+        $graph = [];
+        foreach ($this->bindings as $abstract => $binding) {
+            $concrete = is_string($binding->concrete) ? $binding->concrete : $abstract;
+            $deps = $this->getDependencies($concrete);
+            $graph[$abstract] = $deps;
+        }
+        return $graph;
     }
     /**
      * flushScoped
      */
-    public function flushScoped()
+    public function flushScoped(): void
     {
-        return null;
+        $this->scopedInstances = [];
     }
     /**
      * forgetInstance
      */
-    public function forgetInstance()
+    public function forgetInstance(string $abstract): void
     {
-        return null;
+        $abstract = $this->resolveAlias($abstract);
+        unset($this->instances[$abstract]);
     }
     /**
      * has
      */
     public function has(string $key): bool
     {
-        return false;
+        return $this->bound($key);
     }
     /**
      * lazy
      */
-    public function lazy()
+    public function lazy(string $abstract): mixed
     {
-        return null;
+        return new class($this, $abstract) {
+            private mixed $instance = null;
+            public function __construct(private Container $container, private string $abstract) {}
+            public function __invoke(): mixed
+            {
+                if ($this->instance === null) {
+                    $this->instance = $this->container->make($this->abstract);
+                }
+                return $this->instance;
+            }
+        };
     }
     /**
      * stats
      */
-    public function stats()
+    public function stats(): array
     {
-        return null;
+        return [
+            "bindings" => count($this->bindings),
+            "instances" => count($this->instances),
+            "aliases" => count($this->aliases),
+            "tags" => count($this->tags),
+        ];
     }
 }
