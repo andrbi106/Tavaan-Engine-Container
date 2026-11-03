@@ -18,7 +18,7 @@ final class BindingResolutionException extends RuntimeException
 
     public static function forParameter(string $class, string $parameter): self
     {
-        return new self("Cannot resolve parameter \${$parameter} of {$class}.");
+        return new self("Cannot resolve parameter ${$parameter} of {$class}.");
     }
 
     public static function cyclic(string $abstract): self
