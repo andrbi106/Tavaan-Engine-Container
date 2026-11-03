@@ -514,8 +514,7 @@ final class Container implements ContainerInterface
      */
     public function has(/* ... */): mixed
     {
-        // TODO: Implement per docs.
-        return null;
+        return \$this;
     }
     /**
      * lazy
