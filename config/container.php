@@ -2,30 +2,29 @@
 
 declare(strict_types=1);
 
-/*
- * پیکربندی موتور Container — DOC-031 §6
+/*|--------------------------------------------------------------------------
+ | Container Engine Configuration
+ |--------------------------------------------------------------------------
+ |
+ | پیکربندی موتور container — همهٔ کلیدهای مستندشده در `docs/03-engines/container.md` بخش «پیکربندی».
+ |
+ |@see https://github.com/Derogaramin/Tavaan-Doc/blob/main/docs/03-engines/container.md
  */
 
 return [
-    'reflection_cache' => [
-        'enabled' => env_bool('TVN_CONTAINER_REFLECTION_CACHE', false),
-        'file'    => storage_path('cache/container-reflection.php'),
+    /*| پیش‌فرض موتور (driver/store یا حالت فعال) */
+    'default' => env('CONTAINER_DEFAULT', 'default'),
+
+    /*| کلید کش (در صورت استفاده) */
+    'prefix' => env('CONTAINER_PREFIX', 'container:'),
+
+    /*| تنظیمات لاگ */
+    'log' => [
+        'channel' => env('CONTAINER_LOG_CHANNEL', 'container'),
     ],
-    'compiled' => [
-        'enabled' => env_bool('TVN_CONTAINER_COMPILED', false),
-        'file'    => storage_path('cache/container.php'),
-    ],
-    'lazy_proxies' => [
-        'enabled' => true,
-        'targets' => [],
-    ],
-    'stats' => [
-        'enabled' => env_bool('TVN_CONTAINER_STATS', false),
-    ],
-    'strict' => [
-        // 🔒 پارامتر Constructor بدون type → UntypedParameterException
-        'allow_untyped_parameters' => false,
-        'allow_ambiguous_union'    => false,
-        'max_depth'                => 32,
+
+    /*| سایر کلیدها (طبق مستندات) */
+    'options' => [
+        // TODO: کلیدهای اضافی طبق سند §۶ (پیکربندی)
     ],
 ];
