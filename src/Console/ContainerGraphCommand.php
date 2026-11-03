@@ -9,7 +9,7 @@ use Tavaan\Core\Contracts\Console\CommandInterface;
 /**
  * container:graph command.
  */
-final class Container_graphCommand implements CommandInterface
+final class ContainerGraphCommand implements CommandInterface
 {
     public function name(): string
     {
