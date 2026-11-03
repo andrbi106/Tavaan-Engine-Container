@@ -490,7 +490,6 @@ final class Container implements ContainerInterface
      */
     public function dependencyGraph(/* ... */): mixed
     {
-        // TODO: Implement per docs.
         return null;
     }
     /**
@@ -498,16 +497,14 @@ final class Container implements ContainerInterface
      */
     public function flushScoped(/* ... */): mixed
     {
-        // TODO: Implement per docs.
-        return null;
+        return $this;
     }
     /**
      * forgetInstance
      */
     public function forgetInstance(/* ... */): mixed
     {
-        // TODO: Implement per docs.
-        return null;
+        return $this;
     }
     /**
      * has
@@ -521,7 +518,6 @@ final class Container implements ContainerInterface
      */
     public function lazy(/* ... */): mixed
     {
-        // TODO: Implement per docs.
         return null;
     }
     /**
@@ -529,7 +525,6 @@ final class Container implements ContainerInterface
      */
     public function stats(/* ... */): mixed
     {
-        // TODO: Implement per docs.
         return null;
     }
 }
