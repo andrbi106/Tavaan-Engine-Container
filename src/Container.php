@@ -488,42 +488,42 @@ final class Container implements ContainerInterface
     /**
      * dependencyGraph
      */
-    public function dependencyGraph(/* ... */): mixed
+    public function dependencyGraph()
     {
         return null;
     }
     /**
      * flushScoped
      */
-    public function flushScoped(/* ... */): mixed
+    public function flushScoped()
     {
-        return $this;
+        return null;
     }
     /**
      * forgetInstance
      */
-    public function forgetInstance(/* ... */): mixed
+    public function forgetInstance()
     {
-        return $this;
+        return null;
     }
     /**
      * has
      */
-    public function has(/* ... */): mixed
+    public function has(string $key): bool
     {
-        return $this;
+        return false;
     }
     /**
      * lazy
      */
-    public function lazy(/* ... */): mixed
+    public function lazy()
     {
         return null;
     }
     /**
      * stats
      */
-    public function stats(/* ... */): mixed
+    public function stats()
     {
         return null;
     }
