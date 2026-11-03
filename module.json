@@ -2,7 +2,7 @@
   "id": "tavaan.engine.container",
   "type": "engine",
   "name": "Container",
-  "title_fa": "ظرف سرویس",
+  "title_fa": "ظرف سرویس (DI)",
   "version": "0.1.0",
   "namespace": "Tavaan\\Engine\\Container\\",
   "autoload": {
@@ -27,7 +27,7 @@
   ],
   "facade": {
     "name": "App",
-    "accessor": "Tavaan\\Core\\Contracts\\Container\\ContainerInterface"
+    "accessor": "app"
   },
   "docs": "docs/03-engines/container.md"
 }

@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Container\Console;
 
-use Tavaan\Core\Contracts\Console\CommandInterface;
+use Tavaan\Engine\Container\Container;
 
 /**
- * container:graph command.
+ * Command `container:graph` — نمایش گراف وابستگی‌های ثبت‌شده.
  */
-final class ContainerGraphCommand implements CommandInterface
+final class ContainerGraphCommand
 {
+    public function __construct(
+        private readonly Container $container,
+    ) {
+    }
+
     public function name(): string
     {
         return 'container:graph';
@@ -18,12 +23,17 @@ final class ContainerGraphCommand implements CommandInterface
 
     public function description(): string
     {
-        return 'Run container:graph (TODO: fill description).';
+        return 'نمایش تمام bindingهای ثبت‌شده در Container.';
     }
 
     public function handle(array $args = []): int
     {
-        // TODO: پیاده‌سازی command مطابق مستندات.
+        $bindings = $this->container->bindings();
+        \sort($bindings);
+        echo "Container Bindings (" . \count($bindings) . "):\n";
+        foreach ($bindings as $abstract) {
+            echo "  - {$abstract}\n";
+        }
         return 0;
     }
 }

@@ -4,45 +4,35 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Container;
 
-use Tavaan\Core\Contracts\Container\ContainerInterface;
-use Tavaan\Core\Contracts\Config\RepositoryInterface as ConfigRepository;
 use Tavaan\Engine\Container\Contracts\ContainerInterface;
-use Tavaan\Core\Provider\ServiceProvider;
 
 /**
- * ContainerServiceProvider — ثبت سرویس‌های موتور Container.
+ * ContainerServiceProvider — ثبت خودِ Container در سیستم.
+ *
+ * در عمل، Container خود را ثبت می‌کند تا قابل Resolve از طریق ContainerInterface باشد.
  */
-final class ContainerServiceProvider extends ServiceProvider
+final class ContainerServiceProvider
 {
-    /**
-     * {@inheritdoc}
-     */
+    public function __construct(
+        private readonly Container $container,
+    ) {
+    }
+
     public function register(): void
     {
-        $this->app->singleton(ContainerInterface::class, function (ContainerInterface $app) {
-            /** @var ConfigRepository $config */
-            $config = $app->get(ConfigRepository::class);
-            return new Container($config);
-        });
+        $this->container->instance(ContainerInterface::class, $this->container);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function boot(): void
     {
-        // ثبت commandها
-        $this->commands[] = \Tavaan\Engine\Container\Console\Container_graphCommand::class;
-
+        // No additional boot logic
     }
 
     /**
-     * {@inheritdoc}
+     * @return list<class-string>
      */
     public function provides(): array
     {
-        return [
-            ContainerInterface::class,
-        ];
+        return [ContainerInterface::class, Container::class];
     }
 }

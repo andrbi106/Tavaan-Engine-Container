@@ -5,157 +5,82 @@ declare(strict_types=1);
 namespace Tavaan\Engine\Container\Contracts;
 
 /**
- * قرارداد Container.
+ * قرارداد Container (DI).
  *
  * @see \Tavaan\Engine\Container\Container
  * @api 1.0
+ * @see docs/03-engines/container.md (DOC-031)
  */
 interface ContainerInterface
 {
     /**
-     * متد bind.
+     * ثبت یک binding (Transient به‌طور پیش‌فرض).
      *
-     * @return mixed
+     * @param \Closure|class-string|null $concrete
      */
-    public function bind(/* ... */): mixed;
+    public function bind(string $abstract, \Closure|string|null $concrete = null, bool $shared = false): void;
+
+    /** ثبت Singleton (یک نمونه برای کل فرایند). */
+    public function singleton(string $abstract, \Closure|string|null $concrete = null): void;
+
+    /** ثبت Scoped (یک نمونه به ازای هر Scope فعال: Request/Job/Tenant). */
+    public function scoped(string $abstract, \Closure|string|null $concrete = null): void;
+
+    /** ثبت Factory (هر make = فراخوانی closure). */
+    public function factory(string $abstract, \Closure $factory): void;
+
+    /** ثبت یک نمونهٔ از پیش ساخته‌شده. */
+    public function instance(string $abstract, mixed $instance): void;
+
+    /** ثبت alias. */
+    public function alias(string $abstract, string $alias): void;
 
     /**
-     * متد singleton.
+     * ساخت/Resolve یک سرویس.
      *
-     * @return mixed
+     * @param array<string, mixed> $parameters override پارامترها
      */
-    public function singleton(/* ... */): mixed;
+    public function make(string $abstract, array $parameters = []): mixed;
+
+    /** گرفتن یک سرویس (alias برای make). */
+    public function get(string $abstract): mixed;
+
+    /** بررسی وجود binding. */
+    public function bound(string $abstract): bool;
+
+    /** حذف یک binding. */
+    public function forget(string $abstract): void;
+
+    /**_flush همهٔ bindings و instances. */
+    public function flush(): void;
 
     /**
-     * متد scoped.
+     * Contextual binding.
      *
-     * @return mixed
+     * @return \Tavaan\Engine\Container\ContextualBindingBuilder
      */
-    public function scoped(/* ... */): mixed;
+    public function when(string $concrete): \Tavaan\Engine\Container\ContextualBindingBuilder;
+
+    /** افزودن extender (decorator). */
+    public function extend(string $abstract, \Closure $extender): void;
+
+    /** افزودن tag به کلاس‌ها. */
+    public function tag(array $concretes, string $tag): void;
+
+    /** Resolve همهٔ کلاس‌های یک tag. */
+    public function tagged(string $tag): iterable;
 
     /**
-     * متد factory.
+     * Call a callable with method injection.
      *
-     * @return mixed
+     * @param callable|array<string>|string $callback
+     * @param array<string, mixed> $parameters
      */
-    public function factory(/* ... */): mixed;
+    public function call(callable|array|string $callback, array $parameters = []): mixed;
 
-    /**
-     * متد instance.
-     *
-     * @return mixed
-     */
-    public function instance(/* ... */): mixed;
+    /** @param list<string> $tags */
+    public function taggedKeys(): array;
 
-    /**
-     * متد alias.
-     *
-     * @return mixed
-     */
-    public function alias(/* ... */): mixed;
-
-    /**
-     * متد tag.
-     *
-     * @return mixed
-     */
-    public function tag(/* ... */): mixed;
-
-    /**
-     * متد tagged.
-     *
-     * @return mixed
-     */
-    public function tagged(/* ... */): mixed;
-
-    /**
-     * متد when.
-     *
-     * @return mixed
-     */
-    public function when(/* ... */): mixed;
-
-    /**
-     * متد extend.
-     *
-     * @return mixed
-     */
-    public function extend(/* ... */): mixed;
-
-    /**
-     * متد make.
-     *
-     * @return mixed
-     */
-    public function make(/* ... */): mixed;
-
-    /**
-     * متد get.
-     *
-     * @return mixed
-     */
-    public function get(/* ... */): mixed;
-
-    /**
-     * متد has.
-     *
-     * @return mixed
-     */
-    public function has(/* ... */): mixed;
-
-    /**
-     * متد call.
-     *
-     * @return mixed
-     */
-    public function call(/* ... */): mixed;
-
-    /**
-     * متد lazy.
-     *
-     * @return mixed
-     */
-    public function lazy(/* ... */): mixed;
-
-    /**
-     * متد flush.
-     *
-     * @return mixed
-     */
-    public function flush(/* ... */): mixed;
-
-    /**
-     * متد flushScoped.
-     *
-     * @return mixed
-     */
-    public function flushScoped(/* ... */): mixed;
-
-    /**
-     * متد forgetInstance.
-     *
-     * @return mixed
-     */
-    public function forgetInstance(/* ... */): mixed;
-
-    /**
-     * متد bindings.
-     *
-     * @return mixed
-     */
-    public function bindings(/* ... */): mixed;
-
-    /**
-     * متد dependencyGraph.
-     *
-     * @return mixed
-     */
-    public function dependencyGraph(/* ... */): mixed;
-
-    /**
-     * متد stats.
-     *
-     * @return mixed
-     */
-    public function stats(/* ... */): mixed;
+    /** Resolve با تلاش برای ساخت اگر binding نباشد. */
+    public function build(string $concrete, array $parameters = []): mixed;
 }
