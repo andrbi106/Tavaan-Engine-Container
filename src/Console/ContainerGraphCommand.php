@@ -30,9 +30,11 @@ final class ContainerGraphCommand
     {
         $bindings = $this->container->bindings();
         \sort($bindings);
-        echo "Container Bindings (" . \count($bindings) . "):\n";
+        echo "Container Bindings (" . \count($bindings) . "):
+";
         foreach ($bindings as $abstract) {
-            echo "  - {$abstract}\n";
+            echo "  - {$abstract}
+";
         }
         return 0;
     }
