@@ -36,8 +36,9 @@ $c = new Container();
     {
         // Scenario T-08
 $c = new Container();
-        $c->bind("a", fn() => "A", tags: ["grp"]);
-        $c->bind("b", fn() => "B", tags: ["grp"]);
+        $c->bind("a", fn() => "A");
+        $c->bind("b", fn() => "B");
+        $c->tag(["a", "b"], "grp");
         $tagged = $c->tagged("grp");
         $values = [];
         foreach ($tagged as $item) { $values[] = $item; }
