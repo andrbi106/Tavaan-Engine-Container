@@ -29,5 +29,6 @@
     "name": "App",
     "accessor": "app"
   },
-  "docs": "docs/03-engines/container.md"
+  "docs": "docs/03-engines/container.md",
+  "class": "Tavaan\\Engine\\Container\\ContainerEngine"
 }
