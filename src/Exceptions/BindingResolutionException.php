@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Container\Exceptions;
 
+use Tavaan\Core\Exceptions\TavaanException;
+
 use RuntimeException;
 
 /**
  * وقتی یک وابستگی قابل Resolve نیست.
  */
-final class BindingResolutionException extends RuntimeException
+final class BindingResolutionException extends TavaanException
 {
     public static function forAbstract(string $abstract): self
     {
